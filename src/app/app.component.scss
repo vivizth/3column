@@ -1,0 +1,17 @@
+.wrap {
+    display: flex;
+}
+.col {
+    border: 1px solid black;
+    height: 100vh;
+}
+.w-200 {
+    width: 200px;
+}
+.w-300 {
+    width: 300px;
+}
+.w-auto {
+    flex: 1;
+    min-width: 100px;
+}

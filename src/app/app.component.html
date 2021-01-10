@@ -1,0 +1,13 @@
+<form class="wrap" [formGroup]="form">
+  <div class="col w-200">
+    <input formControlName="number" type="number">
+  </div>
+  <div class="col w-auto">
+    <select formControlName="numType">
+      <option *ngFor="let n of numTypeOption" [value]="n.value">{{n.title}}</option>
+    </select>
+  </div>
+  <div class="col w-300">
+    {{result$ | async}}
+  </div>
+</form>
