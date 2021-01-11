@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { combineLatest, Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, tap } from 'rxjs/operators';
 import * as isPrime from 'isprime';
 import * as isSquare from 'is-square';
 
@@ -29,16 +29,20 @@ export class AppComponent {
       numType: [NUM_TYPE_OPTION.PRIME]
     });
 
-    const number = this.form.get('number').valueChanges.pipe(map(this.toInteger));
-    const type = this.form.get('numType').valueChanges.pipe(startWith(NUM_TYPE_OPTION.PRIME));
+    const numInput = this.form.get('number');
 
-    this.result$ = combineLatest([number, type]).pipe(map(this.calResult));
+    const numChange = numInput.valueChanges.pipe(
+      map(this.toInteger),
+      tap(v => numInput.setValue(v, {emitEvent: false}))
+    );
+    const typeChange = this.form.get('numType').valueChanges.pipe(startWith(NUM_TYPE_OPTION.PRIME));
+
+    this.result$ = combineLatest([numChange, typeChange]).pipe(map(this.calResult));
   }
 
   toInteger = (n: number) => {
     n = Number.isInteger(n) ? n : Math.round(n);
     n = n < 0 ? 1 : n;
-    this.form.get('number').setValue(n, {emitEvent: false});
     return n;
   }
 
